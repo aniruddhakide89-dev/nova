@@ -20,7 +20,7 @@ public class RegistrationService {
     public RegistrationResponseDTO registerServiceInstance(RegistrationRequestDTO dto){
         ServiceInstance serviceInstance = new ServiceInstance();
         serviceInstance.setInstanceId(UUID.randomUUID());
-        serviceInstance.setServiceName(dto.getServiceName());
+        serviceInstance.setServiceName(dto.getServiceName().toUpperCase());
         serviceInstance.setHost(dto.getHost());
         serviceInstance.setPort(dto.getPort());
         serviceInstance.setScheme(dto.getScheme());
