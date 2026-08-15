@@ -54,4 +54,14 @@ public class DependencyServiceController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/graph")
+    public ResponseEntity<GraphDependencyResponseDTO> getDependencyGraph(){
+        return ResponseEntity.ok(serviceDependencyService.getDependencyGraph());
+    }
+
+    @GetMapping("/{targetService}/impact")
+    public ResponseEntity<List<CascadingImpactedServiceDTO>> getCascadingImpact(@PathVariable String targetService){
+        return ResponseEntity.ok(serviceDependencyService.getCascadingImpactedServices(targetService));
+    }
+
 }
