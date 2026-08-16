@@ -20,4 +20,8 @@ public class DiscoveryService {
         return serviceInstanceRepository.findByServiceNameAndStatus(serviceName,status).stream().map(mapper::toDTO).collect(Collectors.toList());
     }
 
+    public List<DiscoveryDTO> getALlInstances(){
+        return serviceInstanceRepository.findAll().stream().map(mapper::toDTO).toList();
+    }
+
 }

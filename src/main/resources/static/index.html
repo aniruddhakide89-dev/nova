@@ -1,0 +1,2269 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Nova Dashboard</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Inter, -apple-system, BlinkMacSystemFont,
+                         "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background: #0b0f14;
+            color: #e6edf3;
+        }
+
+        .app {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* =========================
+           Sidebar
+           ========================= */
+
+        .sidebar {
+            width: 240px;
+            background: #0f141b;
+            border-right: 1px solid #202832;
+
+            display: flex;
+            flex-direction: column;
+
+            padding: 24px 16px;
+
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            padding: 8px 10px 30px;
+        }
+
+        .brand-icon {
+            width: 38px;
+            height: 38px;
+
+            border-radius: 10px;
+
+            background: #e6edf3;
+            color: #0b0f14;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-weight: 800;
+            font-size: 18px;
+        }
+
+        .brand h1 {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .brand span {
+            font-size: 11px;
+            color: #7d8996;
+        }
+
+        nav {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .nav-item {
+            text-decoration: none;
+            color: #8b98a6;
+
+            padding: 11px 12px;
+
+            border-radius: 8px;
+
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            font-size: 14px;
+        }
+
+        .nav-item:hover {
+            background: #171d25;
+            color: #e6edf3;
+        }
+
+        .nav-item.active {
+            background: #1b222c;
+            color: #ffffff;
+        }
+
+        .nav-item span {
+            width: 18px;
+            text-align: center;
+        }
+
+        .sidebar-footer {
+            margin-top: auto;
+
+            padding: 12px;
+
+            border-top: 1px solid #202832;
+
+            color: #7d8996;
+            font-size: 12px;
+
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+
+        /* =========================
+           Main
+           ========================= */
+
+        .main {
+            flex: 1;
+
+            margin-left: 240px;
+
+            padding: 32px 40px;
+
+            max-width: 1600px;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            margin-bottom: 32px;
+        }
+
+        .topbar h2 {
+            font-size: 26px;
+            margin-bottom: 5px;
+        }
+
+        .topbar p {
+            color: #7d8996;
+            font-size: 14px;
+        }
+
+        .server-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+
+            color: #8b98a6;
+            font-size: 13px;
+
+            padding: 9px 14px;
+
+            border: 1px solid #202832;
+            border-radius: 8px;
+
+            background: #0f141b;
+        }
+
+        .status-dot {
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: #3fb950;
+
+            display: inline-block;
+        }
+
+
+        /* =========================
+           Statistics
+           ========================= */
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+
+            gap: 16px;
+
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: #0f141b;
+
+            border: 1px solid #202832;
+            border-radius: 10px;
+
+            padding: 20px;
+        }
+
+        .stat-label {
+            color: #7d8996;
+            font-size: 13px;
+
+            margin-bottom: 10px;
+        }
+
+        .stat-value {
+            font-size: 30px;
+            font-weight: 700;
+
+            margin-bottom: 5px;
+        }
+
+        .stat-value.success {
+            color: #3fb950;
+        }
+
+        .stat-value.danger {
+            color: #f85149;
+        }
+
+        .stat-description {
+            color: #65717e;
+            font-size: 12px;
+        }
+
+
+        /* =========================
+           Panels
+           ========================= */
+
+        .panel {
+            background: #0f141b;
+
+            border: 1px solid #202832;
+            border-radius: 10px;
+
+            margin-bottom: 24px;
+
+            overflow: hidden;
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            padding: 20px 22px;
+
+            border-bottom: 1px solid #202832;
+        }
+
+        .panel-header h3 {
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+
+        .panel-header p {
+            font-size: 12px;
+            color: #65717e;
+        }
+
+        .refresh-btn {
+            background: transparent;
+
+            color: #8b98a6;
+
+            border: 1px solid #303944;
+            border-radius: 7px;
+
+            padding: 7px 12px;
+
+            cursor: pointer;
+
+            font-size: 12px;
+        }
+
+        .refresh-btn:hover {
+            background: #171d25;
+            color: #ffffff;
+        }
+
+
+        /* =========================
+           Table
+           ========================= */
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: #0c1117;
+        }
+
+        th {
+            text-align: left;
+
+            padding: 12px 20px;
+
+            color: #65717e;
+
+            font-size: 11px;
+            font-weight: 600;
+
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            padding: 15px 20px;
+
+            border-top: 1px solid #1c232c;
+
+            font-size: 13px;
+
+            color: #aeb8c2;
+        }
+
+        tbody tr:hover {
+            background: #121820;
+        }
+
+        .service-name {
+            color: #e6edf3;
+            font-weight: 600;
+        }
+
+        .instance-id {
+            font-family: monospace;
+
+            color: #65717e;
+
+            font-size: 11px;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+
+            padding: 4px 9px;
+
+            border-radius: 20px;
+
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .badge.up {
+            background: rgba(63, 185, 80, 0.1);
+            color: #3fb950;
+        }
+
+        .badge.down {
+            background: rgba(248, 81, 73, 0.1);
+            color: #f85149;
+        }
+
+        .badge.down .status-dot {
+            background: #f85149;
+        }
+
+
+        /* =========================
+           Dependency Graph
+           ========================= */
+
+        .graph-container {
+            height: 500px;
+
+            position: relative;
+
+            overflow: hidden;
+
+            background:
+                radial-gradient(
+                    circle at center,
+                    #101720 0%,
+                    #0b1016 70%
+                );
+        }
+
+        #dependencyGraph {
+            width: 100%;
+            height: 100%;
+
+            display: block;
+        }
+
+        .graph-edge {
+            stroke: #4b5563;
+
+            stroke-width: 1.8;
+
+            opacity: 0.8;
+        }
+
+        .graph-edge:hover {
+            stroke: #8b98a6;
+            opacity: 1;
+        }
+
+        .graph-node {
+            cursor: pointer;
+        }
+
+        .graph-node circle {
+            stroke-width: 2;
+
+            transition:
+                stroke-width 0.15s ease,
+                filter 0.15s ease;
+        }
+
+        .graph-node:hover circle {
+            stroke-width: 3;
+
+            filter:
+                drop-shadow(
+                    0 0 8px rgba(255,255,255,0.15)
+                );
+        }
+
+        .graph-node-name {
+            fill: #e6edf3;
+
+            font-size: 11px;
+
+            font-weight: 600;
+
+            text-anchor: middle;
+
+            pointer-events: none;
+        }
+
+        .graph-node-status {
+            font-size: 9px;
+
+            font-weight: 500;
+
+            text-anchor: middle;
+
+            pointer-events: none;
+        }
+
+        .graph-node-status.up {
+            fill: #3fb950;
+        }
+
+        .graph-node-status.down {
+            fill: #f85149;
+        }
+
+        .graph-empty {
+            height: 100%;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            flex-direction: column;
+
+            color: #65717e;
+        }
+
+        .graph-empty-icon {
+            width: 50px;
+            height: 50px;
+
+            margin-bottom: 14px;
+
+            border-radius: 12px;
+
+            background: #171d25;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            font-size: 20px;
+
+            color: #8b98a6;
+        }
+
+        .graph-empty h3 {
+            color: #aeb8c2;
+
+            font-size: 14px;
+
+            margin-bottom: 6px;
+        }
+
+        .graph-empty p {
+            font-size: 12px;
+        }
+
+        .graph-legend {
+            display: flex;
+
+            align-items: center;
+
+            gap: 18px;
+
+            padding: 10px 22px;
+
+            border-top: 1px solid #202832;
+
+            background: #0c1117;
+
+            color: #7d8996;
+
+            font-size: 11px;
+        }
+
+        .legend-item {
+            display: flex;
+
+            align-items: center;
+
+            gap: 6px;
+        }
+
+        .legend-circle {
+            width: 8px;
+            height: 8px;
+
+            border-radius: 50%;
+        }
+
+        .legend-circle.up {
+            background: #3fb950;
+        }
+
+        .legend-circle.down {
+            background: #f85149;
+        }
+
+
+        /* =========================
+           Graph Tooltip
+           ========================= */
+
+        .graph-tooltip {
+            position: absolute;
+
+            display: none;
+
+            pointer-events: none;
+
+            background: #151b23;
+
+            border: 1px solid #303944;
+
+            border-radius: 8px;
+
+            padding: 10px 12px;
+
+            min-width: 150px;
+
+            box-shadow:
+                0 8px 30px rgba(0,0,0,0.35);
+
+            z-index: 10;
+        }
+
+        .graph-tooltip-title {
+            color: #e6edf3;
+
+            font-size: 12px;
+
+            font-weight: 600;
+
+            margin-bottom: 5px;
+        }
+
+        .graph-tooltip-status {
+            font-size: 11px;
+        }
+
+        .graph-tooltip-status.up {
+            color: #3fb950;
+        }
+
+        .graph-tooltip-status.down {
+            color: #f85149;
+        }
+
+
+        /* =========================
+           Error
+           ========================= */
+
+        .error {
+            text-align: center;
+
+            color: #f85149;
+        }
+
+
+        /* =========================
+           Responsive
+           ========================= */
+
+        @media (max-width: 900px) {
+
+            .sidebar {
+                width: 70px;
+            }
+
+            .brand div:not(.brand-icon),
+            .nav-item {
+                font-size: 0;
+            }
+
+            .brand {
+                justify-content: center;
+
+                padding-left: 0;
+                padding-right: 0;
+            }
+
+            .nav-item {
+                justify-content: center;
+            }
+
+            .sidebar-footer {
+                font-size: 0;
+                justify-content: center;
+            }
+
+            .main {
+                margin-left: 70px;
+
+                padding: 24px;
+            }
+
+            .stats {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+        }
+
+
+        @media (max-width: 600px) {
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .topbar {
+                align-items: flex-start;
+
+                gap: 15px;
+
+                flex-direction: column;
+            }
+
+            .graph-container {
+                height: 400px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="app">
+
+
+    <!-- =========================
+         Sidebar
+         ========================= -->
+
+    <aside class="sidebar">
+
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                N
+            </div>
+
+            <div>
+
+                <h1>Nova</h1>
+
+                <span>
+                    Service Observability
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <nav>
+
+            <a
+                    class="nav-item active"
+                    href="/dashboard"
+            >
+
+                <span>▦</span>
+
+                Dashboard
+
+            </a>
+
+
+            <a
+                    class="nav-item"
+                    href="#"
+            >
+
+                <span>◉</span>
+
+                Services
+
+            </a>
+
+
+            <a
+                    class="nav-item"
+                    href="#dependency-section"
+            >
+
+                <span>⌘</span>
+
+                Dependencies
+
+            </a>
+
+
+            <a
+                    class="nav-item"
+                    href="#"
+            >
+
+                <span>♥</span>
+
+                Health
+
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-footer">
+
+            <span class="status-dot"></span>
+
+            Nova Server Online
+
+        </div>
+
+
+    </aside>
+
+
+    <!-- =========================
+         Main
+         ========================= -->
+
+    <main class="main">
+
+
+        <header class="topbar">
+
+            <div>
+
+                <h2>
+                    Dashboard
+                </h2>
+
+                <p>
+                    Service registry and observability overview
+                </p>
+
+            </div>
+
+
+            <div class="server-status">
+
+                <span class="status-dot"></span>
+
+                System Operational
+
+            </div>
+
+        </header>
+
+
+        <!-- =========================
+             Statistics
+             ========================= -->
+
+        <section class="stats">
+
+
+            <div class="stat-card">
+
+                <div class="stat-label">
+                    Services
+                </div>
+
+                <div
+                        class="stat-value"
+                        id="totalServices"
+                >
+                    --
+                </div>
+
+                <div class="stat-description">
+                    Registered services
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-label">
+                    Instances
+                </div>
+
+                <div
+                        class="stat-value"
+                        id="totalInstances"
+                >
+                    --
+                </div>
+
+                <div class="stat-description">
+                    Registered instances
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-label">
+                    Healthy
+                </div>
+
+                <div
+                        class="stat-value success"
+                        id="upInstances"
+                >
+                    --
+                </div>
+
+                <div class="stat-description">
+                    Instances currently UP
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-label">
+                    Down
+                </div>
+
+                <div
+                        class="stat-value danger"
+                        id="downInstances"
+                >
+                    --
+                </div>
+
+                <div class="stat-description">
+                    Instances currently DOWN
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+        <!-- =========================
+             Service Instances
+             ========================= -->
+
+        <section class="panel">
+
+
+            <div class="panel-header">
+
+                <div>
+
+                    <h3>
+                        Service Instances
+                    </h3>
+
+                    <p>
+                        Currently registered instances
+                    </p>
+
+                </div>
+
+
+                <button
+                        onclick="refreshAll()"
+                        class="refresh-btn"
+                >
+                    ↻ Refresh
+                </button>
+
+            </div>
+
+
+            <div class="table-container">
+
+
+                <table>
+
+                    <thead>
+
+                    <tr>
+
+                        <th>
+                            Service
+                        </th>
+
+                        <th>
+                            Instance ID
+                        </th>
+
+                        <th>
+                            Host
+                        </th>
+
+                        <th>
+                            Port
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                        <th>
+                            Last Heartbeat
+                        </th>
+
+                    </tr>
+
+                    </thead>
+
+
+                    <tbody id="serviceTable">
+
+                    </tbody>
+
+                </table>
+
+
+            </div>
+
+
+        </section>
+
+
+        <!-- =========================
+             Dependency Graph
+             ========================= -->
+
+        <section
+                class="panel"
+                id="dependency-section"
+        >
+
+
+            <div class="panel-header">
+
+                <div>
+
+                    <h3>
+                        Dependency Graph
+                    </h3>
+
+                    <p>
+                        Service-to-service communication topology
+                    </p>
+
+                </div>
+
+
+                <button
+                        onclick="loadDependencyGraph()"
+                        class="refresh-btn"
+                >
+                    ↻ Refresh
+                </button>
+
+            </div>
+
+
+            <div class="graph-container">
+
+                <svg
+                        id="dependencyGraph"
+                >
+                </svg>
+
+
+                <div
+                        id="graphTooltip"
+                        class="graph-tooltip"
+                >
+
+                    <div
+                            id="tooltipTitle"
+                            class="graph-tooltip-title"
+                    >
+                    </div>
+
+                    <div
+                            id="tooltipStatus"
+                            class="graph-tooltip-status"
+                    >
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="graph-legend">
+
+
+                <div class="legend-item">
+
+                    <span
+                            class="legend-circle up"
+                    ></span>
+
+                    UP
+
+                </div>
+
+
+                <div class="legend-item">
+
+                    <span
+                            class="legend-circle down"
+                    ></span>
+
+                    DOWN
+
+                </div>
+
+
+                <div class="legend-item">
+
+                    <span>
+                        ───
+                    </span>
+
+                    Dependency
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+</div>
+
+
+<script>
+
+
+    /* =========================
+       API Endpoints
+       ========================= */
+
+    const DASHBOARD_API =
+        "/dashboard/data";
+
+    const GRAPH_API =
+        "/dependencies/graph";
+
+
+    /* =========================
+       Dashboard
+       ========================= */
+
+    async function loadDashboard() {
+
+        try {
+
+            const response =
+                await fetch(DASHBOARD_API);
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "Failed to load dashboard data"
+                );
+
+            }
+
+
+            const data =
+                await response.json();
+
+
+            updateStatistics(data);
+
+            updateServiceTable(
+                data.serviceInstances
+            );
+
+
+        } catch (error) {
+
+            console.error(
+                "Dashboard error:",
+                error
+            );
+
+
+            document.getElementById(
+                "serviceTable"
+            ).innerHTML = `
+
+                <tr>
+
+                    <td
+                        colspan="6"
+                        class="error"
+                    >
+                        Failed to load dashboard data
+                    </td>
+
+                </tr>
+
+            `;
+
+        }
+
+    }
+
+
+    /* =========================
+       Statistics
+       ========================= */
+
+    function updateStatistics(data) {
+
+        document.getElementById(
+            "totalServices"
+        ).textContent =
+            data.totalService ?? 0;
+
+
+        document.getElementById(
+            "totalInstances"
+        ).textContent =
+            data.totalInstances ?? 0;
+
+
+        /*
+         * Keeping your existing backend
+         * response fields exactly as they are.
+         */
+
+        document.getElementById(
+            "upInstances"
+        ).textContent =
+            data.upInstances ?? 0;
+
+
+        document.getElementById(
+            "downInstances"
+        ).textContent =
+            data.downInstances ?? 0;
+
+    }
+
+
+    /* =========================
+       Service Table
+       ========================= */
+
+    function updateServiceTable(instances) {
+
+        const table =
+            document.getElementById(
+                "serviceTable"
+            );
+
+
+        table.innerHTML = "";
+
+
+        if (!instances ||
+            instances.length === 0) {
+
+            table.innerHTML = `
+
+                <tr>
+
+                    <td
+                        colspan="6"
+                        style="text-align:center;"
+                    >
+                        No service instances registered
+                    </td>
+
+                </tr>
+
+            `;
+
+            return;
+
+        }
+
+
+        instances.forEach(instance => {
+
+            const row =
+                document.createElement("tr");
+
+
+            const status =
+                instance.status;
+
+
+            const statusClass =
+                status === "UP"
+                    ? "up"
+                    : "down";
+
+
+            const heartbeat =
+                instance.lastHeartbeat
+                    ? formatTime(
+                        instance.lastHeartbeat
+                    )
+                    : "Never";
+
+
+            row.innerHTML = `
+
+                <td>
+
+                    <span class="service-name">
+
+                        ${escapeHtml(
+                            instance.serviceName
+                        )}
+
+                    </span>
+
+                </td>
+
+
+                <td>
+
+                    <span class="instance-id">
+
+                        ${escapeHtml(
+                            instance.instanceId
+                        )}
+
+                    </span>
+
+                </td>
+
+
+                <td>
+
+                    ${escapeHtml(
+                        instance.host ?? "-"
+                    )}
+
+                </td>
+
+
+                <td>
+
+                    ${instance.port ?? "-"}
+
+                </td>
+
+
+                <td>
+
+                    <span
+                        class="badge ${statusClass}"
+                    >
+
+                        <span
+                            class="status-dot"
+                            style="
+                                background:
+                                ${status === "UP"
+                                    ? "#3fb950"
+                                    : "#f85149"};
+                            "
+                        ></span>
+
+                        ${escapeHtml(status)}
+
+                    </span>
+
+                </td>
+
+
+                <td>
+
+                    ${heartbeat}
+
+                </td>
+
+            `;
+
+
+            table.appendChild(row);
+
+        });
+
+    }
+
+
+    /* =========================
+       Dependency Graph
+       ========================= */
+
+    async function loadDependencyGraph() {
+
+        try {
+
+            const response =
+                await fetch(GRAPH_API);
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "Failed to load dependency graph"
+                );
+
+            }
+
+
+            const data =
+                await response.json();
+
+
+            renderDependencyGraph(data);
+
+
+        } catch (error) {
+
+            console.error(
+                "Dependency graph error:",
+                error
+            );
+
+
+            renderGraphError();
+
+        }
+
+    }
+
+
+    /* =========================
+       Render Graph
+       ========================= */
+
+    function renderDependencyGraph(data) {
+
+        const svg =
+            document.getElementById(
+                "dependencyGraph"
+            );
+
+
+        svg.innerHTML = "";
+
+
+        if (!data ||
+            !data.nodes ||
+            data.nodes.length === 0) {
+
+            renderEmptyGraph();
+
+            return;
+
+        }
+
+
+        const width =
+            svg.clientWidth;
+
+
+        const height =
+            svg.clientHeight;
+
+
+        /*
+         * Your backend currently creates
+         * graph nodes from ServiceInstances.
+         *
+         * Therefore multiple instances of
+         * the same service can appear.
+         *
+         * The dependency graph is service-level,
+         * so we merge them here.
+         *
+         * If ANY instance is UP,
+         * the service is considered UP.
+         */
+
+        const serviceMap =
+            new Map();
+
+
+        data.nodes.forEach(node => {
+
+            const existing =
+                serviceMap.get(
+                    node.serviceName
+                );
+
+
+            if (!existing) {
+
+                serviceMap.set(
+                    node.serviceName,
+                    {
+                        serviceName:
+                            node.serviceName,
+
+                        status:
+                            node.status
+                    }
+                );
+
+            } else if (
+                node.status === "UP"
+            ) {
+
+                existing.status = "UP";
+
+            }
+
+        });
+
+
+        const nodes =
+            Array.from(
+                serviceMap.values()
+            );
+
+
+        /*
+         * Remove duplicate edges.
+         */
+
+        const edgeSet =
+            new Set();
+
+
+        const edges =
+            data.edges.filter(edge => {
+
+                const key =
+                    `${edge.sourceService}->${edge.targetService}`;
+
+
+                if (edgeSet.has(key)) {
+                    return false;
+                }
+
+
+                edgeSet.add(key);
+
+                return true;
+
+            });
+
+
+        /*
+         * Create node positions.
+         *
+         * Circular positioning works reasonably
+         * well for arbitrary dependency graphs,
+         * including cycles.
+         */
+
+        const centerX =
+            width / 2;
+
+
+        const centerY =
+            height / 2;
+
+
+        const radius =
+            Math.min(
+                width,
+                height
+            ) * 0.32;
+
+
+        const nodeRadius = 42;
+
+
+        nodes.forEach((node, index) => {
+
+            const angle =
+                (
+                    2 *
+                    Math.PI *
+                    index
+                ) / nodes.length
+                -
+                Math.PI / 2;
+
+
+            node.x =
+                centerX +
+                radius *
+                Math.cos(angle);
+
+
+            node.y =
+                centerY +
+                radius *
+                Math.sin(angle);
+
+        });
+
+
+        const nodeMap =
+            new Map();
+
+
+        nodes.forEach(node => {
+
+            nodeMap.set(
+                node.serviceName,
+                node
+            );
+
+        });
+
+
+        /*
+         * Arrow marker
+         */
+
+        const defs =
+            document.createElementNS(
+                "http://www.w3.org/2000/svg",
+                "defs"
+            );
+
+
+        const marker =
+            document.createElementNS(
+                "http://www.w3.org/2000/svg",
+                "marker"
+            );
+
+
+        marker.setAttribute(
+            "id",
+            "dependencyArrow"
+        );
+
+
+        marker.setAttribute(
+            "markerWidth",
+            "8"
+        );
+
+
+        marker.setAttribute(
+            "markerHeight",
+            "8"
+        );
+
+
+        marker.setAttribute(
+            "refX",
+            "7"
+        );
+
+
+        marker.setAttribute(
+            "refY",
+            "3"
+        );
+
+
+        marker.setAttribute(
+            "orient",
+            "auto"
+        );
+
+
+        marker.setAttribute(
+            "markerUnits",
+            "strokeWidth"
+        );
+
+
+        const arrow =
+            document.createElementNS(
+                "http://www.w3.org/2000/svg",
+                "path"
+            );
+
+
+        arrow.setAttribute(
+            "d",
+            "M0,0 L0,6 L7,3 z"
+        );
+
+
+        arrow.setAttribute(
+            "fill",
+            "#4b5563"
+        );
+
+
+        marker.appendChild(arrow);
+
+        defs.appendChild(marker);
+
+        svg.appendChild(defs);
+
+
+        /*
+         * Draw edges first.
+         */
+
+        edges.forEach(edge => {
+
+            const source =
+                nodeMap.get(
+                    edge.sourceService
+                );
+
+
+            const target =
+                nodeMap.get(
+                    edge.targetService
+                );
+
+
+            if (!source || !target) {
+                return;
+            }
+
+
+            const dx =
+                target.x -
+                source.x;
+
+
+            const dy =
+                target.y -
+                source.y;
+
+
+            const distance =
+                Math.sqrt(
+                    dx * dx +
+                    dy * dy
+                );
+
+
+            if (distance === 0) {
+                return;
+            }
+
+
+            const unitX =
+                dx / distance;
+
+
+            const unitY =
+                dy / distance;
+
+
+            /*
+             * Start/end the edge at the
+             * node boundaries rather than
+             * the node centers.
+             */
+
+            const startX =
+                source.x +
+                unitX *
+                nodeRadius;
+
+
+            const startY =
+                source.y +
+                unitY *
+                nodeRadius;
+
+
+            const endX =
+                target.x -
+                unitX *
+                nodeRadius;
+
+
+            const endY =
+                target.y -
+                unitY *
+                nodeRadius;
+
+
+            const line =
+                document.createElementNS(
+                    "http://www.w3.org/2000/svg",
+                    "line"
+                );
+
+
+            line.setAttribute(
+                "x1",
+                startX
+            );
+
+
+            line.setAttribute(
+                "y1",
+                startY
+            );
+
+
+            line.setAttribute(
+                "x2",
+                endX
+            );
+
+
+            line.setAttribute(
+                "y2",
+                endY
+            );
+
+
+            line.classList.add(
+                "graph-edge"
+            );
+
+
+            line.setAttribute(
+                "marker-end",
+                "url(#dependencyArrow)"
+            );
+
+
+            svg.appendChild(line);
+
+        });
+
+
+        /*
+         * Draw nodes.
+         */
+
+        nodes.forEach(node => {
+
+            const group =
+                document.createElementNS(
+                    "http://www.w3.org/2000/svg",
+                    "g"
+                );
+
+
+            group.classList.add(
+                "graph-node"
+            );
+
+
+            /*
+             * Node circle
+             */
+
+            const circle =
+                document.createElementNS(
+                    "http://www.w3.org/2000/svg",
+                    "circle"
+                );
+
+
+            circle.setAttribute(
+                "cx",
+                node.x
+            );
+
+
+            circle.setAttribute(
+                "cy",
+                node.y
+            );
+
+
+            circle.setAttribute(
+                "r",
+                nodeRadius
+            );
+
+
+            if (node.status === "UP") {
+
+                circle.setAttribute(
+                    "fill",
+                    "#132b1a"
+                );
+
+
+                circle.setAttribute(
+                    "stroke",
+                    "#3fb950"
+                );
+
+            } else {
+
+                circle.setAttribute(
+                    "fill",
+                    "#321817"
+                );
+
+
+                circle.setAttribute(
+                    "stroke",
+                    "#f85149"
+                );
+
+            }
+
+
+            group.appendChild(circle);
+
+
+            /*
+             * Service name
+             */
+
+            const name =
+                document.createElementNS(
+                    "http://www.w3.org/2000/svg",
+                    "text"
+                );
+
+
+            name.setAttribute(
+                "x",
+                node.x
+            );
+
+
+            name.setAttribute(
+                "y",
+                node.y - 3
+            );
+
+
+            name.classList.add(
+                "graph-node-name"
+            );
+
+
+            name.textContent =
+                node.serviceName;
+
+
+            group.appendChild(name);
+
+
+            /*
+             * Status
+             */
+
+            const status =
+                document.createElementNS(
+                    "http://www.w3.org/2000/svg",
+                    "text"
+                );
+
+
+            status.setAttribute(
+                "x",
+                node.x
+            );
+
+
+            status.setAttribute(
+                "y",
+                node.y + 15
+            );
+
+
+            status.classList.add(
+                "graph-node-status"
+            );
+
+
+            status.classList.add(
+                node.status === "UP"
+                    ? "up"
+                    : "down"
+            );
+
+
+            status.textContent =
+                node.status;
+
+
+            group.appendChild(status);
+
+
+            /*
+             * Tooltip
+             */
+
+            group.addEventListener(
+                "mouseenter",
+                event => {
+
+                    showGraphTooltip(
+                        event,
+                        node
+                    );
+
+                }
+            );
+
+
+            group.addEventListener(
+                "mousemove",
+                event => {
+
+                    moveGraphTooltip(
+                        event
+                    );
+
+                }
+            );
+
+
+            group.addEventListener(
+                "mouseleave",
+                hideGraphTooltip
+            );
+
+
+            svg.appendChild(group);
+
+        });
+
+    }
+
+
+    /* =========================
+       Graph Tooltip
+       ========================= */
+
+    function showGraphTooltip(
+        event,
+        node
+    ) {
+
+        const tooltip =
+            document.getElementById(
+                "graphTooltip"
+            );
+
+
+        const title =
+            document.getElementById(
+                "tooltipTitle"
+            );
+
+
+        const status =
+            document.getElementById(
+                "tooltipStatus"
+            );
+
+
+        title.textContent =
+            node.serviceName;
+
+
+        status.textContent =
+            `Status: ${node.status}`;
+
+
+        status.className =
+            "graph-tooltip-status " +
+            (
+                node.status === "UP"
+                    ? "up"
+                    : "down"
+            );
+
+
+        tooltip.style.display =
+            "block";
+
+
+        moveGraphTooltip(event);
+
+    }
+
+
+    function moveGraphTooltip(event) {
+
+        const tooltip =
+            document.getElementById(
+                "graphTooltip"
+            );
+
+
+        const container =
+            document.querySelector(
+                ".graph-container"
+            );
+
+
+        const rect =
+            container.getBoundingClientRect();
+
+
+        tooltip.style.left =
+            `${event.clientX - rect.left + 15}px`;
+
+
+        tooltip.style.top =
+            `${event.clientY - rect.top + 15}px`;
+
+    }
+
+
+    function hideGraphTooltip() {
+
+        document.getElementById(
+            "graphTooltip"
+        ).style.display =
+            "none";
+
+    }
+
+
+    /* =========================
+       Empty Graph
+       ========================= */
+
+    function renderEmptyGraph() {
+
+        const svg =
+            document.getElementById(
+                "dependencyGraph"
+            );
+
+
+        svg.innerHTML = `
+
+            <foreignObject
+                x="0"
+                y="0"
+                width="100%"
+                height="100%"
+            >
+
+                <div
+                    xmlns="http://www.w3.org/1999/xhtml"
+                    class="graph-empty"
+                >
+
+                    <div class="graph-empty-icon">
+                        ⌘
+                    </div>
+
+                    <h3>
+                        No dependencies found
+                    </h3>
+
+                    <p>
+                        Service dependency information
+                        will appear here.
+                    </p>
+
+                </div>
+
+            </foreignObject>
+
+        `;
+
+    }
+
+
+    /* =========================
+       Graph Error
+       ========================= */
+
+    function renderGraphError() {
+
+        const svg =
+            document.getElementById(
+                "dependencyGraph"
+            );
+
+
+        svg.innerHTML = `
+
+            <foreignObject
+                x="0"
+                y="0"
+                width="100%"
+                height="100%"
+            >
+
+                <div
+                    xmlns="http://www.w3.org/1999/xhtml"
+                    class="graph-empty"
+                >
+
+                    <div class="graph-empty-icon">
+                        !
+                    </div>
+
+                    <h3>
+                        Unable to load dependency graph
+                    </h3>
+
+                    <p>
+                        Check the Nova dependency graph endpoint.
+                    </p>
+
+                </div>
+
+            </foreignObject>
+
+        `;
+
+    }
+
+
+    /* =========================
+       Utility
+       ========================= */
+
+    function formatTime(timestamp) {
+
+        const date =
+            new Date(timestamp);
+
+
+        return date.toLocaleString();
+
+    }
+
+
+    function escapeHtml(value) {
+
+        if (
+            value === null ||
+            value === undefined
+        ) {
+
+            return "";
+
+        }
+
+
+        return String(value)
+            .replaceAll("&", "&amp;")
+            .replaceAll("<", "&lt;")
+            .replaceAll(">", "&gt;")
+            .replaceAll('"', "&quot;")
+            .replaceAll("'", "&#039;");
+
+    }
+
+
+    /* =========================
+       Refresh Everything
+       ========================= */
+
+    function refreshAll() {
+
+        loadDashboard();
+
+        loadDependencyGraph();
+
+    }
+
+
+    /* =========================
+       Initial Load
+       ========================= */
+
+    loadDashboard();
+
+    loadDependencyGraph();
+
+
+    /* =========================
+       Auto Refresh
+       ========================= */
+
+    setInterval(
+        refreshAll,
+        10000
+    );
+
+
+</script>
+
+</body>
+
+</html>

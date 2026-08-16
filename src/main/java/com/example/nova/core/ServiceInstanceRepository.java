@@ -9,4 +9,5 @@ import java.util.UUID;
 public interface ServiceInstanceRepository extends JpaRepository<ServiceInstance,UUID>{
     List<ServiceInstance> findByServiceNameAndStatus(String serviceName , Status status);
     List<ServiceInstance> findByStatusAndLastHeartbeatBefore(Status status , Instant instant);
+    List<ServiceInstance> findByServiceName(String serviceName);
 }
