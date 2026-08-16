@@ -1,8 +1,8 @@
-# Nova
+# Compass
 
-**Nova** is a lightweight **service discovery, dependency tracking, and observability platform for microservices**, inspired by systems such as Netflix Eureka.
+**Compass** is a lightweight **service discovery, dependency tracking, and observability platform for microservices**, inspired by systems such as Netflix Eureka.
 
-Nova provides a centralized platform for registering and discovering microservices while also tracking service health, service-to-service dependencies, dependency graphs, and cascading failure impact.
+Compass provides a centralized platform for registering and discovering microservices while also tracking service health, service-to-service dependencies, dependency graphs, and cascading failure impact.
 
 The project goes beyond traditional service registries by providing visibility into **how services are connected and how failures can propagate across the system**.
 
@@ -25,9 +25,9 @@ Order Service
                        Warehouse Service
 ```
 
-If `Inventory Service` goes down, Nova can identify the dependency relationship and determine which services may be impacted.
+If `Inventory Service` goes down, Compass can identify the dependency relationship and determine which services may be impacted.
 
-Nova therefore combines:
+Compass therefore combines:
 
 - Service Registration
 - Service Discovery
@@ -46,7 +46,7 @@ Nova therefore combines:
 
 ```text
                               ┌─────────────────────────┐
-                              │          Nova           │
+                              │          Compass           │
                               │                         │
                               │   Service Registry      │
                               │   Service Discovery     │
@@ -81,7 +81,7 @@ Nova therefore combines:
                                   Service Health Data
                                            │
                                            ▼
-                                  Nova Dashboard
+                                  Compass Dashboard
 ```
 
 ---
@@ -90,7 +90,7 @@ Nova therefore combines:
 
 ### Service Registry
 
-Nova maintains information about registered service instances including:
+Compass maintains information about registered service instances including:
 
 - Service name
 - Instance ID
@@ -101,13 +101,13 @@ Nova maintains information about registered service instances including:
 - Registration timestamp
 - Last heartbeat timestamp
 
-Services register themselves with Nova and become available for discovery.
+Services register themselves with Compass and become available for discovery.
 
 ---
 
 ### Service Discovery
 
-Nova provides APIs for discovering registered service instances.
+Compass provides APIs for discovering registered service instances.
 
 Services can retrieve available instances and their current status, allowing service consumers to determine which instances are available.
 
@@ -115,16 +115,16 @@ Services can retrieve available instances and their current status, allowing ser
 
 ### Heartbeat Monitoring
 
-Registered services periodically send heartbeat information to Nova.
+Registered services periodically send heartbeat information to Compass.
 
-Nova tracks the last heartbeat received from each service instance and uses this information to determine whether an instance is still active.
+Compass tracks the last heartbeat received from each service instance and uses this information to determine whether an instance is still active.
 
 ```text
 Service
    │
    │ Heartbeat
    ▼
- Nova
+ Compass
    │
    │ Track last heartbeat
    ▼
@@ -139,9 +139,9 @@ Service Instance
 
 ### Server-Side Failure Detection
 
-Nova performs server-side monitoring of registered instances.
+Compass performs server-side monitoring of registered instances.
 
-If an instance stops sending heartbeats within the expected interval, Nova can mark that instance as unavailable.
+If an instance stops sending heartbeats within the expected interval, Compass can mark that instance as unavailable.
 
 This prevents service consumers from relying on stale service information.
 
@@ -149,7 +149,7 @@ This prevents service consumers from relying on stale service information.
 
 ### Service Metadata
 
-Nova supports additional metadata associated with registered services.
+Compass supports additional metadata associated with registered services.
 
 Metadata can describe information such as:
 
@@ -163,13 +163,13 @@ Metadata can describe information such as:
 - Git commit
 - Custom JSON attributes
 
-This allows Nova to provide more contextual information about individual service instances.
+This allows Compass to provide more contextual information about individual service instances.
 
 ---
 
 ### Service Dependency Tracking
 
-Nova tracks communication between services using source and target service relationships.
+Compass tracks communication between services using source and target service relationships.
 
 For example:
 
@@ -184,7 +184,7 @@ source = order-service
 target = payment-service
 ```
 
-Nova maintains when a dependency was first observed and when it was most recently observed.
+Compass maintains when a dependency was first observed and when it was most recently observed.
 
 This provides the foundation for understanding service topology.
 
@@ -192,7 +192,7 @@ This provides the foundation for understanding service topology.
 
 ### Dependency Graph
 
-Nova converts the stored dependency relationships into a service-level graph.
+Compass converts the stored dependency relationships into a service-level graph.
 
 For example:
 
@@ -229,7 +229,7 @@ It can therefore represent:
 
 ### Cascading Impact Analysis
 
-Nova can analyze the dependency graph to determine which services may be impacted when a service becomes unavailable.
+Compass can analyze the dependency graph to determine which services may be impacted when a service becomes unavailable.
 
 For example:
 
@@ -256,7 +256,7 @@ A ───────────┼──► C ──► E
              └──► F ──► G
 ```
 
-Nova can traverse the dependency relationships and identify services that depend directly or indirectly on the affected service.
+Compass can traverse the dependency relationships and identify services that depend directly or indirectly on the affected service.
 
 Circular dependencies are handled through visited-node tracking to prevent infinite traversal.
 
@@ -264,7 +264,7 @@ Circular dependencies are handled through visited-node tracking to prevent infin
 
 ## Health Information
 
-Nova provides health information at the service-instance level.
+Compass provides health information at the service-instance level.
 
 Health information includes:
 
@@ -296,7 +296,7 @@ The health layer currently focuses on providing basic and useful service health 
 
 ## Dashboard
 
-Nova includes a lightweight HTML dashboard hosted directly by the Nova server.
+Compass includes a lightweight HTML dashboard hosted directly by the Compass server.
 
 The dashboard provides visibility into:
 
@@ -311,11 +311,11 @@ The dashboard provides visibility into:
 - Service dependency graph
 - Service topology
 
-The dashboard is intentionally implemented using plain **HTML, CSS, and JavaScript** so that Nova remains lightweight and does not require a separate frontend application.
+The dashboard is intentionally implemented using plain **HTML, CSS, and JavaScript** so that Compass remains lightweight and does not require a separate frontend application.
 
 ```text
 ┌──────────────────────────────────────────────────────────┐
-│                         NOVA                             │
+│                       COMPASS                            │
 │                 Service Observability                    │
 ├────────────┬─────────────────────────────────────────────┤
 │            │                                             │
@@ -344,7 +344,7 @@ The dashboard is intentionally implemented using plain **HTML, CSS, and JavaScri
 
 ## API Architecture
 
-Nova follows a layered Spring Boot architecture.
+Compass follows a layered Spring Boot architecture.
 
 ```text
                     REST Controllers
@@ -374,7 +374,7 @@ This keeps API handling, business logic, persistence, and data transformation se
 
 ## Data Model
 
-Nova currently persists information around the following major concepts:
+Compass currently persists information around the following major concepts:
 
 ```text
 Service Instance
@@ -444,7 +444,7 @@ The stack is standard and unremarkable by design — no framework choice here is
 
 ## Project Structure
 
-The backend is organized around individual Nova capabilities.
+The backend is organized around individual Compass capabilities.
 
 ```text
 src/
@@ -452,7 +452,7 @@ src/
     ├── java/
     │   └── com/
     │       └── example/
-    │           └── nova/
+    │           └── compass/
     │               │
     │               ├── core/
     │               │
@@ -481,7 +481,7 @@ src/
 
 ## Example Service Topology
 
-A typical Nova-monitored system can look like:
+A typical Compass-monitored system can look like:
 
 ```text
                          ┌─────────────────┐
@@ -501,7 +501,7 @@ A typical Nova-monitored system can look like:
                                       └─────────────────┘
 ```
 
-Nova observes these relationships and maintains them as dependency edges:
+Compass observes these relationships and maintains them as dependency edges:
 
 ```text
 Order → Payment
@@ -509,7 +509,7 @@ Order → Inventory
 Inventory → Warehouse
 ```
 
-If `Inventory` becomes unavailable, Nova can traverse the graph and identify services that depend on it.
+If `Inventory` becomes unavailable, Compass can traverse the graph and identify services that depend on it.
 
 ---
 
@@ -541,7 +541,7 @@ If `Inventory` becomes unavailable, Nova can traverse the graph and identify ser
 
 ## Roadmap
 
-Nova's core functionality is implemented. Further development is focused on improving reliability, observability, usability, and deployment rather than continuously adding unrelated features.
+Compass's core functionality is implemented. Further development is focused on improving reliability, observability, usability, and deployment rather than continuously adding unrelated features.
 
 ### Reliability
 
@@ -578,21 +578,21 @@ Nova's core functionality is implemented. Further development is focused on impr
 
 ### Client Integration
 
-- Provide a lightweight Nova client SDK
+- Provide a lightweight Compass client SDK
 - Simplify service registration
 - Simplify heartbeat handling
 - Simplify dependency reporting
-- Reduce the amount of Nova-specific code required inside client services
+- Reduce the amount of Compass-specific code required inside client services
 
 ---
 
 ## Design Philosophy
 
-Nova is designed around a few simple principles:
+Compass is designed around a few simple principles:
 
 ### Lightweight
 
-Nova should provide useful service infrastructure without forcing every consumer to adopt a large ecosystem.
+Compass should provide useful service infrastructure without forcing every consumer to adopt a large ecosystem.
 
 ### Service-Level Visibility
 
@@ -600,7 +600,7 @@ Understanding that a service is `UP` or `DOWN` is useful, but understanding **wh
 
 ### Dependency-Aware
 
-Nova treats service dependencies as first-class information rather than simply maintaining a registry of independent service instances.
+Compass treats service dependencies as first-class information rather than simply maintaining a registry of independent service instances.
 
 ### Extensible
 
@@ -608,11 +608,11 @@ The architecture separates registration, discovery, metadata, dependencies, heal
 
 ### Practical Observability
 
-Nova focuses on information that can help developers understand the state and topology of their distributed systems rather than attempting to produce overly complex metrics without sufficient data.
+Compass focuses on information that can help developers understand the state and topology of their distributed systems rather than attempting to produce overly complex metrics without sufficient data.
 
 ---
 
-## Running Nova
+## Running Compass
 
 ### Requirements
 
@@ -642,16 +642,16 @@ Or build and run the generated JAR:
 
 ```bash
 mvn clean package
-java -jar target/nova-*.jar
+java -jar target/compass-*.jar
 ```
 
-Once Nova is running, the dashboard is served directly by the Nova application.
+Once Compass is running, the dashboard is served directly by the Compass application.
 
 ---
 
 ## Project Status
 
-Nova is an actively developed project focused on building a practical **service discovery and observability platform for microservice architectures**.
+Compass is an actively developed project focused on building a practical **service discovery and observability platform for microservice architectures**.
 
 The core platform currently covers:
 
